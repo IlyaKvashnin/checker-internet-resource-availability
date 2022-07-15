@@ -2,6 +2,7 @@ package main
 
 import (
 	"bufio"
+	"fmt"
 	"log"
 	"os"
 )
@@ -17,4 +18,10 @@ func readFile(path string) []string {
 		data = append(data, scanner.Text())
 	}
 	return data
+}
+
+func recovery() {
+	if msg := recover(); msg != nil {
+		fmt.Println(msg)
+	}
 }
