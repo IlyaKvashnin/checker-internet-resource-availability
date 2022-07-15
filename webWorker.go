@@ -2,7 +2,8 @@ package main
 
 import (
 	"fmt"
-	"io/ioutil"
+	"github.com/PuerkitoBio/goquery"
+	"log"
 	"net"
 	"net/http"
 	"sync"
@@ -35,8 +36,12 @@ func checkUrl(wg *sync.WaitGroup, url string) {
 		return
 	}
 	if r.statusCode == 200 {
-		content, _ := ioutil.ReadAll(resp.Body)
-		r.header = parseBody(string(content))
+		doc, err := goquery.NewDocumentFromReader(resp.Body)
+		if err != nil {
+			log.Fatal(err)
+		}
+		title := doc.Find("title").Text()
+		r.header = title
 	}
 	r.ip = getIP(url)
 	fmt.Println(r.ToString())
@@ -45,7 +50,7 @@ func checkUrl(wg *sync.WaitGroup, url string) {
 }
 
 func getIP(url string) string {
-	ip, err := net.ResolveIPAddr("ip4", url)
+	ip, err := net.ResolveIPAddr("ip4", parseUrl(url))
 	if err != nil {
 		defer recovery()
 		panic(err)
