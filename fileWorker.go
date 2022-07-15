@@ -25,3 +25,16 @@ func recovery() {
 		fmt.Println(msg)
 	}
 }
+
+func log_to_file(s string) {
+	// Сохраняет сообщения в файл
+	f, err := os.OpenFile("./files/result.txt", os.O_RDWR|os.O_APPEND|os.O_CREATE, 0644)
+	if err != nil {
+		fmt.Println(err)
+		return
+	}
+	defer f.Close()
+	if _, err = f.WriteString(fmt.Sprintln(s)); err != nil {
+		fmt.Println(err)
+	}
+}

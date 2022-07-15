@@ -28,12 +28,16 @@ func checkUrl(wg *sync.WaitGroup, url string) {
 		return
 	}
 	defer resp.Body.Close()
-	if resp.StatusCode == 200 {
-		//fmt.Printf("Ошибка. http-статус: %v\n", resp.StatusCode)
+	r.statusCode = resp.StatusCode
+	if r.statusCode == 302 {
+		r.ip = resp.Header.Get("Location")
+		fmt.Println(r.ToString())
+		return
+	}
+	if r.statusCode == 200 {
 		content, _ := ioutil.ReadAll(resp.Body)
 		r.header = parseBody(string(content))
 	}
-	r.statusCode = resp.StatusCode
 	r.ip = getIP(url)
 	fmt.Println(r.ToString())
 	//fmt.Printf("Онлайн. http-статус: %d\n", resp.StatusCode)
