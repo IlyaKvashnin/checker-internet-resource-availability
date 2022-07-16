@@ -6,7 +6,7 @@ import (
 	"time"
 )
 
-func checkUrl(url string) string {
+func checkUrl(url string) response {
 	r := response{url, "", 0, ""}
 
 	var client = &http.Client{
@@ -18,7 +18,7 @@ func checkUrl(url string) string {
 	resp, err := client.Get(url)
 	if err != nil {
 		r.statusCode = 500
-		return r.ToString()
+		return r
 	}
 
 	defer resp.Body.Close()
@@ -27,13 +27,12 @@ func checkUrl(url string) string {
 
 	if r.statusCode == 302 {
 		r.ip = resp.Header.Get("Location")
-		return r.ToString()
+		return r
 	} else if r.statusCode == 200 {
 		r.header = parseBody(resp.Body)
 	}
-
 	r.ip = getIP(url)
-	return r.ToString()
+	return r
 }
 
 func getIP(url string) string {

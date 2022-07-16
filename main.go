@@ -4,9 +4,9 @@ import (
 	"sync"
 )
 
-const FilePath = "./files/rkn-70000.txt"
+const FilePath = "./files/test1.txt"
 
-var c chan string
+var c chan response
 
 func main() {
 	file := readFile(FilePath)
@@ -17,7 +17,7 @@ func main() {
 		wg.Done()
 	}()
 
-	c = make(chan string, 10000)
+	c = make(chan response, 10000)
 	routines := make(chan struct{}, 10000)
 
 	for _, v := range file {

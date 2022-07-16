@@ -142,4 +142,6 @@ fabric.properties
 # https://plugins.jetbrains.com/plugin/8053-azure-toolkit-for-intellij
 .idea/**/azureSettings.xml
 
+./files/test.txt
+./files/test1.txt
 # End of https://www.toptal.com/developers/gitignore/api/goland,go
