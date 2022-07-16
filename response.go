@@ -1,8 +1,8 @@
 package main
 
 type response struct {
-	url        string
-	ip         string
-	statusCode int
-	header     string
+	Url        string
+	Ip         string
+	StatusCode int
+	Header     string
 }

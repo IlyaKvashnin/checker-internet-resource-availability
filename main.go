@@ -4,7 +4,7 @@ import (
 	"sync"
 )
 
-const FilePath = "./files/test1.txt"
+const FilePath = "./files/rkn-70000.txt"
 
 var c chan response
 

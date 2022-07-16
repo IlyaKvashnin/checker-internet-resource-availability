@@ -3,7 +3,6 @@ package main
 import (
 	"bufio"
 	"encoding/json"
-	"fmt"
 	"os"
 )
 
@@ -23,7 +22,7 @@ func readFile(path string) []string {
 func logToFile() {
 	f, err := os.OpenFile("./files/res.json", os.O_RDWR|os.O_APPEND|os.O_CREATE, 0644)
 	if err != nil {
-		fmt.Println(err)
+		panic(err)
 		return
 	}
 	defer f.Close()
@@ -32,21 +31,13 @@ func logToFile() {
 		if !ok {
 			break
 		} else {
-
-			r, _ := json.Marshal(val)
-			fmt.Printf("%s", r)
-			if _, err = f.WriteString(string(r)); err != nil {
+			result, e := json.MarshalIndent(val, "", " ")
+			if e != nil {
+				panic(e)
+			}
+			if _, err = f.WriteString(string(result[:])); err != nil {
 				panic(err)
 			}
-			//data, fatal := json.Marshal(val)
-			//if fatal != nil {
-			//	panic(err)
-			//} else {
-			//	if _, err = f.WriteString(string(data)); err != nil {
-			//		panic(err)
-			//	}
-			//}
-
 		}
 	}
 }

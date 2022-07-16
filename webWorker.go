@@ -17,28 +17,29 @@ func checkUrl(url string) response {
 
 	resp, err := client.Get(url)
 	if err != nil {
-		r.statusCode = 500
+		r.StatusCode = 500
 		return r
 	}
 
 	defer resp.Body.Close()
 
-	r.statusCode = resp.StatusCode
+	r.StatusCode = resp.StatusCode
 
-	if r.statusCode == 302 {
-		r.ip = resp.Header.Get("Location")
+	if r.StatusCode == 302 {
+		r.Ip = resp.Header.Get("Location")
 		return r
-	} else if r.statusCode == 200 {
-		r.header = parseBody(resp.Body)
+	} else if r.StatusCode == 200 {
+		r.Header = parseBody(resp.Body)
 	}
-	r.ip = getIP(url)
+
+	r.Ip = getIP(url)
 	return r
 }
 
 func getIP(url string) string {
 	ip, err := net.ResolveIPAddr("ip4", parseUrl(url))
 	if err != nil {
-		panic(err)
+		return ""
 	}
 	return ip.String()
 }
